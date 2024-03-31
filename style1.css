@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.light{
+  background-color: #e5f8ff;
+  color: #333;
+}
+
+.black{
+  background-color: #1d4250;
+  color: #c5eaf7;
+}
+.btn{
+  border: none;
+  max-width: 450px;
+  height: 50px;
+  border-radius: 30px;
+  font-size: 20px;
+  color: deepskyblue;
+  cursor: pointer;
+}
