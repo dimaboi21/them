@@ -1194,24 +1194,79 @@
 // const mas = ["ququ", 1,2,3, "123"]
 // localStorage.setItem("mas",JSON.stringify(mas))
 
-const btn = document.querySelector(".btn");
-const body = document.querySelector("body");
-const them = localStorage.getItem("them");
-if (them) {
-  body.classList.add(them);
-} else {
-  localStorage.setItem("them", "light");
-  body.classList.add("light");
-}
-btn.addEventListener("click", () => {
-  if (body.classList.contains("light")) {
-    body.classList.remove("light");
-    body.classList.add("black");
-    localStorage.setItem("them", "black");
-  } else {
-    body.classList.remove("black");
-    body.classList.add("light");
-    localStorage.setItem("them", "light");
-  }
-});
+// const btn = document.querySelector(".btn");
+// const body = document.querySelector("body");
+// const them = localStorage.getItem("them");
+// if (them) {
+//   body.classList.add(them);
+// } else {
+//   localStorage.setItem("them", "light");
+//   body.classList.add("light");
+// }
+// btn.addEventListener("click", () => {
+//   if (body.classList.contains("light")) {
+//     body.classList.remove("light");
+//     body.classList.add("black");
+//     localStorage.setItem("them", "black");
+//   } else {
+//     body.classList.remove("black");
+//     body.classList.add("light");
+//     localStorage.setItem("them", "light");
+//   }
+// });
 
+// Дз
+
+document.addEventListener("DOMContentLoaded", function() {
+  loadTasks();
+});
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function displayTasks() {
+  const taskList = document.getElementById("taskList");
+  taskList.innerHTML = "";
+
+  tasks.forEach(function(task, index) {
+      const taskElement = document.createElement("div");
+      taskElement.classList.add("task");
+      if (task.checked) {
+          taskElement.classList.add("checked");
+      }
+      taskElement.innerHTML = `
+          <input type="checkbox" onchange="toggleTask(${index})" ${task.checked ? "checked" : ""}>
+          <span>${task.description}</span>
+          <button onclick="deleteTask(${index})">Delete</button>
+      `;
+      taskList.appendChild(taskElement);
+  });
+}
+function addTask() {
+  const taskInput = document.getElementById("taskInput");
+  const description = taskInput.value.trim();
+  if (description !== "") {
+      const newTask = { description: description, checked: false };
+      tasks.push(newTask);
+      saveTasks();
+      displayTasks();
+      taskInput.value = "";
+  }
+}
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  saveTasks();
+  displayTasks();
+}
+function toggleTask(index) {
+  tasks[index].checked = !tasks[index].checked;
+  saveTasks();
+  displayTasks();
+}
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+function loadTasks() {
+  const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+  if (storedTasks) {
+      tasks = storedTasks;
+      displayTasks();
+  }
+}
